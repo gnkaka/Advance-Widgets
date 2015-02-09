@@ -1,5 +1,4 @@
 <?php 
-	App::import("Model", "AdvanceWidget.WhoViewedMe");
-	$WhoViewedMe =  new WhoViewedMe();
-	$WhoViewedMe->updateModel();
+	$wivs=MooCore::getInstance()->getModel('AdvanceWidget.WhoViewedMe');
+	$wivs->updateModel();
 ?>
