@@ -24,7 +24,6 @@ INSERT INTO `core_contents` (`page_id`, `type`, `name`, `component`, `parent_id`
 UPDATE `core_contents` SET   `page_id`=(SELECT `id` FROM `pages` WHERE  `title`='Profile Page')  ,  `core_block_id` =(SELECT ID FROM `core_blocks` WHERE `name`= 'Check Viewed Me' )
  WHERE name='checkWVMs';
  
-DELETE FROM core_menu_items WHERE name = 'Who Viewed Me';
  
  CREATE TABLE `whom_i_vieweds` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -51,4 +50,4 @@ VALUES('Check I Viewed', 'checkWIVs','[{"label":"Title","input":"text","value":"
 UPDATE `core_contents` SET   `page_id`=(SELECT `id` FROM `pages` WHERE  `title`='Profile Page')  ,  `core_block_id` =(SELECT ID FROM `core_blocks` WHERE `name`= 'Check I Viewed' )
  WHERE name='checkWIVs';
  
- DELETE FROM core_menu_items WHERE name = 'Whom I Viewed';
+ DELETE FROM core_menu_items WHERE name = 'Advance Widget';
