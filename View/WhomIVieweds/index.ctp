@@ -1,3 +1,7 @@
+<?php 
+$friend= MooCore::getInstance()->getModel('Friend');
+$friend_request = MooCore::getInstance()->getModel('FriendRequest');
+?>
 <script>
 function respondRequest(id, status)
 {
@@ -29,20 +33,14 @@ function respondRequest(id, status)
 			                    <td>
 			                      	<table style='display: block; margin-left:5px;font-size:14px;'>
 			                      		<tr style='font-size:14px;'><td><?=$this->Moo->getName($wiv['User'])?></td></tr>
-			                      		<tr style='font-size:11px;'><td>	<?php 
-			                      		App::uses('CakeTime', 'Utility');
-			                      		echo CakeTime::timeAgoInWords($wiv['WhomIViewed']['date_view'], array('format' => 'F jS, Y', 'end' => '+1 year'));
-			                      		 ?><br>
+			                      		<tr style='font-size:11px;'><td>
+			                      		<?=$this->AppTime->timeAgoInWords($wiv['WhomIViewed']['date_view'],array('format' => 'F jS, Y', 'end' => '+1 year'))?><br>
 	                      				<?=$wiv['WhomIViewed']['count_view'] ?> viewed</td></tr>	                      							                      		                      				
-				                      			<?php
-				                      			App::import("Model", "Friend");
-				                      			App::import("Model","FriendRequest");
-				                      			$this->Friend =  new Friend();
-				                      			$this->FriendRequest= new FriendRequest();
+				                      			<?php				             
 				                      			$uid1=$wiv['WhomIViewed']['me_id'];
 				                      			$uid2=$wiv['WhomIViewed']['whom_id'];
-				                      			$areFriends=$this->Friend->areFriends($uid1,$uid2);
-				                      			$request=$this->FriendRequest->getRequests( $uid1 );
+				                      			$areFriends=$friend->areFriends($uid1,$uid2);
+				                      			$request=$friend_request->getRequests( $uid1 );
 				                      			if ( !$areFriends): ?>
 				                      				<?php if($request==null):?>
 				                      					<tr style='font-size:13px;'>
@@ -56,7 +54,7 @@ function respondRequest(id, status)
 										            <?php if($request!=null):?>
 										            <tr style='font-size:13px;'>
 										            <td>
-										            	<a href="javascript:void(0)" onclick="respondRequest(<?php echo reset(Hash::extract($request, '{n}.FriendRequest.id'))?>, 1)" ><?=__('Accept friend Request')?></a>
+										            	<a href="javascript:void(0)" onclick="respondRequest(<?php echo reset(Hash::extract($request, '{n}.FriendRequest.id'))?>, 1)" ><?=__d('accept','Accept friend Request')?></a>
 										            	</td></tr>
 										            <?php endif; ?>
 									            <?php endif; ?>
