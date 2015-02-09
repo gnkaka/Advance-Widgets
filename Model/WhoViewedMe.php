@@ -23,6 +23,7 @@ class WhoViewedMe extends AppModel {
 				'page' => $page)
 		);
 		return $wvms;	
+
 	}   	
 	public function updateModel(){
 		App::uses('CakeSession', 'Model/Datasource');
@@ -34,13 +35,15 @@ class WhoViewedMe extends AppModel {
 		{
 			if($user_view!=$view_user)
 			{
-				$sql="INSERT INTO `who_viewed_mes`(`view_user`, `user_view`, `count_view`, `date_view`) VALUES (".$view_user.",".$user_view.",1,'".$string_date."')";
-				$this->query($sql);
+				$this->set(array('user_view'=>$user_view,'view_user'=>$view_user,'count_view'=>1,'date_view'=>$string_date));
+				$this->save();
 			}
 		}else{
 			$id=implode(reset($this->find('first',array('conditions'=>array('user_view'=>$user_view,'view_user'=>$view_user),'fields'=>'id'))));		
-			$sql1="UPDATE `who_viewed_mes`SET `count_view`=count_view+1,`date_view`= '".$string_date."' where `id`=".$id."";
-			$this->query($sql1);
+			$count_view=implode(reset($this->find('first',array('conditions'=>array('id'=>$id),'fields'=>'count_view'))));
+			$this->id=$id;
+			$this->set(array('count_view'=>$count_view+1,'date_view'=>$string_date));
+			$this->save();
 		}
 	}
 }
