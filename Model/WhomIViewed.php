@@ -35,13 +35,15 @@ class WhomIViewed extends AppModel {
 		{
 			if($me_id!=$whom_id)
 			{
-				$sql="INSERT INTO `whom_i_vieweds`(`me_id`, `whom_id`, `count_view`, `date_view`) VALUES (".$me_id.",".$whom_id.",1,'".$string_date."')";
-				$this->query($sql);
+				$this->set(array('me_id'=>$me_id,'whom_id'=>$whom_id,'count_view'=>1,'date_view'=>$string_date));
+				$this->save();
 			}
 		}else{
 			$id=implode(reset($this->find('first',array('conditions'=>array('me_id'=>$me_id,'whom_id'=>$whom_id),'fields'=>'id'))));
-			$sql1="UPDATE `whom_i_vieweds`SET `count_view`=count_view+1,`date_view`= '".$string_date."' where `id`=".$id."";
-			$this->query($sql1);
+			$count_view=implode(reset($this->find('first',array('conditions'=>array('id'=>$id),'fields'=>'count_view'))));
+			$this->id=$id;
+			$this->set(array('count_view'=>$count_view+1,'date_view'=>$string_date));
+			$this->save();
 		}
 	}
 }
